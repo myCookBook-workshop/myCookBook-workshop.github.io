@@ -1,5 +1,5 @@
 import { html, until } from '../lib.js';
-import { getRecipes } from '../api/recipe.js';
+import { getRecentRecipes } from '../api/recipe.js';
 import { spinner } from './common.js';
 
 const homeTemplate = (recipePromise) => html`
@@ -16,7 +16,7 @@ const homeTemplate = (recipePromise) => html`
     <footer class="section-title">
         <p>Browse all recipes in the <a href="/catalog">Catalog</a></p>
     </footer>
-</section>`
+</section>`;
 
 const recipePreview = (recipe) => html`
 <a class="card" href="/details/${recipe.objectId}">
@@ -24,14 +24,14 @@ const recipePreview = (recipe) => html`
         <div class="recent-preview"><img src="${recipe.img}"></div>
         <div class="recent-title">${recipe.name}</div>
     </article>
-</a>`
+</a>`;
 
 export function homePage(ctx) {
     ctx.render(homeTemplate(loadRecipes()));
 }
 
 async function loadRecipes() {
-    const { results: recipes } = await getRecipes();
+    const { results: recipes } = await getRecentRecipes();
 
     if (recipes.lenght == 0) {
         return html`<p>No recipes found. Be the first to post a recipe!</p>`
@@ -44,5 +44,4 @@ async function loadRecipes() {
             return a;
         }, []);
     }
-
 }

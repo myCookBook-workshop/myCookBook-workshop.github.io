@@ -20,3 +20,15 @@ export function createSubmitHandler(callback, ...fields) {
         callback(data, event);
     }
 }
+
+export function parseQuery(querystring) {
+    if (querystring == '') {
+        return {};
+    } else {
+        return querystring.split('&').reduce((a, c) => {
+            const [key, value] = c.split('=');
+            a[key] = value;
+            return a;
+        }, {});
+    }
+}

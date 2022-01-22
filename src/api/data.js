@@ -1,8 +1,13 @@
 import { getUserData } from '../util.js';
 
+const pageSize = 5;
+
 export const endpoints = {
-    recipes: '/classes/Recipe',
+    recent: '/classes/Recipe?limit=3',
+    recipes: (page) => `/classes/Recipe?skip=${(page - 1) * pageSize}&limit=${pageSize}`,
+    recipeSearch: (page, query) => `/classes/Recipe?where=${createQuery(query)}&skip=${(page - 1) * pageSize}&limit=${pageSize}`,
     recipesDetails: (id) => `/classes/Recipe/${id}?include=owner`,
+    createRecipe: '/classes/Recipe/',
     recipesById: '/classes/Recipe/',
     comments: '/classes/Comment',
     commentsByRecipe: (recipeId) => `/classes/Comment?where=${createPointerQuery('recipe', 'Recipe', recipeId)}&include=owner&order=-createdAt`
