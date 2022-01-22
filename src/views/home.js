@@ -1,6 +1,6 @@
 import { html, until } from '../lib.js';
-import { getRecentRecipes } from '../api/recipe.js';
 import { spinner } from './common.js';
+import { getRecentRecipes } from '../api/recipe.js';
 
 const homeTemplate = (recipePromise) => html`
 <section id="home">
@@ -13,9 +13,11 @@ const homeTemplate = (recipePromise) => html`
         ${until(recipePromise, spinner())}
 
     </div>
+
     <footer class="section-title">
         <p>Browse all recipes in the <a href="/catalog">Catalog</a></p>
     </footer>
+    
 </section>`;
 
 const recipePreview = (recipe) => html`

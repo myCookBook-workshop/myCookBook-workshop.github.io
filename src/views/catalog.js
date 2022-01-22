@@ -1,9 +1,9 @@
 import { html, until } from '../lib.js';
-import { getRecipes } from '../api/recipe.js';
 import { spinner } from './common.js';
+import { getRecipes } from '../api/recipe.js';
 import { createSubmitHandler, parseQuery } from '../util.js';
 
-const catalogTemplate = (recipePromise, onSearch, page = 1, search = '') => html`
+const catalogTemplate = (recipePromise, onSearch, pager, search = '') => html`
 <section id="catalog">
     <div class="section-title">
         <form @submit=${onSearch} id="searchForm">
@@ -11,19 +11,12 @@ const catalogTemplate = (recipePromise, onSearch, page = 1, search = '') => html
             <input type="submit" value="Search">
         </form>
     </div>
-
     <header class="section-title">
-        Page 2 of 3
-        <a class="pager" href="/catalog/1">&lt; Prev</a>
-        <a class="pager" href="/catalog/3">Next &gt;</a>
+        ${until(pager(), spinner())}
     </header>
-
     ${until(recipePromise, spinner())}
-
     <footer class="section-title">
-        Page 2 of 3
-        <a class="pager" href="/catalog/1">&lt; Prev</a>
-        <a class="pager" href="/catalog/3">Next &gt;</a>
+        ${until(pager(), spinner())}
     </footer>
 </section>`;
 
@@ -33,29 +26,47 @@ const recipePreview = (recipe) => html`
         <div class="title">
             <h2>${recipe.name}</h2>
         </div>
-        <div class="small"><img src="${recipe.img}"></div>
+        <div class="small"><img src=${recipe.img}></div>
     </article>
 </a>`;
 
+function pagerSetup(page, recipesPromise, search) {
+    return async () => {
+        const { pages } = await recipesPromise;
+
+        return html`
+            Page ${page} of ${pages}
+            ${page > 1 ? html`<a class="pager" href=${'/catalog/' + createQuery(page - 1, search)}>&lt;
+                Prev</a>` : ''}
+            ${page < pages ? html`<a class="pager" href=${'/catalog/' + createQuery(page + 1, search)}>Next
+                &gt;</a>` : ''}`;
+    };
+}
+
+function createQuery(page, search) {
+    return `?page=${page}${(search ? `&search=${search}` : '')}`;
+}
+
 export function catalogPage(ctx) {
     const { page, search } = parseQuery(ctx.querystring);
+    const recipesPromise = getRecipes(page || 1, search || '');
 
-    ctx.render(catalogTemplate(loadRecipes(page, search), createSubmitHandler(onSearch, 'search'), page, search));
+    ctx.render(catalogTemplate(loadRecipes(recipesPromise), createSubmitHandler(onSearch, 'search'), pagerSetup(page || 1, recipesPromise, search), search));
 
     function onSearch({ search }) {
         if (search) {
-            ctx.page.redirect(`catalog?search=${encodeURIComponent(search)}`);
+            ctx.page.redirect(`/catalog?search=${encodeURIComponent(search)}`);
         } else {
             ctx.page.redirect('/catalog');
         }
     }
 }
 
-async function loadRecipes(page = 1, search = '') {
-    const { results: recipes } = await getRecipes(page, search);
+async function loadRecipes(recipesPromise) {
+    const { results: recipes } = await recipesPromise;
 
-    if (recipes.lenght == 0) {
-        return html`<p>No recipes found. Be the first to post a recipe!</p>`
+    if (recipes.length == 0) {
+        return html`<p>No recipes found. Be the first to post a recipe!</p>`;
     } else {
         return recipes.map(recipePreview);
     }

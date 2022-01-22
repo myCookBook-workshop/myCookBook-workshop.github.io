@@ -1,6 +1,6 @@
 import { html, until, render } from "../lib.js";
-import { createComment, getCommentsByRecipeId } from "../api/comment.js";
 import { spinner } from "./common.js";
+import { createComment, getCommentsByRecipeId } from "../api/comment.js";
 import { createSubmitHandler } from "../util.js";
 
 const commentsTemplate = (commentsPromise, hasUser, active, onToggle, onSubmit) => html`

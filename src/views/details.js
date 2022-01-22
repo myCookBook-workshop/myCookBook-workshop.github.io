@@ -1,8 +1,8 @@
 import { html } from '../lib.js';
 import { until } from '../lib.js';
+import { spinner } from './common.js';
 import { deleteRecipe, getrecipeById } from '../api/recipe.js';
 import { commentsView } from './comments.js';
-import { spinner } from './common.js';
 
 const detailsTemplate = (recipePromise) => html`
 <section id="details">

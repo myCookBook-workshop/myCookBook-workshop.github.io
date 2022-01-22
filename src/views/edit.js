@@ -37,6 +37,7 @@ const editTemplate = (onSubmit, errors, data) => html`
 export async function editPage(ctx) {
     const recipeId = ctx.params.id;
     const recipe = await getrecipeById(recipeId);
+    
     recipe.ingredients = recipe.ingredients.join('\n');
     recipe.steps = recipe.steps.join('\n');
 
