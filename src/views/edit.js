@@ -1,6 +1,6 @@
 import { html } from '../lib.js';
 import { errorMsg, field } from './common.js';
-import { getrecipeById, updateRecipe } from '../api/recipe.js';
+import { getRecipeById, updateRecipe } from '../api/recipe.js';
 import { createSubmitHandler } from '../util.js';
 
 const editTemplate = (onSubmit, errors, data) => html`
@@ -36,7 +36,7 @@ const editTemplate = (onSubmit, errors, data) => html`
 
 export async function editPage(ctx) {
     const recipeId = ctx.params.id;
-    const recipe = await getrecipeById(recipeId);
+    const recipe = await getRecipeById(recipeId);
     
     recipe.ingredients = recipe.ingredients.join('\n');
     recipe.steps = recipe.steps.join('\n');

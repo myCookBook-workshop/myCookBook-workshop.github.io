@@ -1,7 +1,7 @@
 import { html } from '../lib.js';
 import { until } from '../lib.js';
 import { spinner } from './common.js';
-import { deleteRecipe, getrecipeById } from '../api/recipe.js';
+import { deleteRecipe, getRecipeById } from '../api/recipe.js';
 import { commentsView } from './comments.js';
 
 const detailsTemplate = (recipePromise) => html`
@@ -44,7 +44,7 @@ export function detailsPage(ctx) {
 }
 
 async function loadRecipe(ctx) {
-    const recipe = await getrecipeById(ctx.params.id);
+    const recipe = await getRecipeById(ctx.params.id);
 
     const isOwner = ctx.user && ctx.user.id == recipe.owner.objectId;
 

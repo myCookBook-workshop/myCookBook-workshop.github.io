@@ -1,7 +1,7 @@
 import * as api from './api.js';
 import { endpoints, addOwner } from './data.js';
 
-const pageSize = 3;
+const pageSize = 5;
 
 export async function getRecentRecipes() {
     return api.get(endpoints.recent);
@@ -24,15 +24,15 @@ export async function getRecipes(page, query) {
         } else {
             return api.get(endpoints.recipes(page, pageSize));
         }
-    }) ();
+    })();
 
-    data.pages = Math.ceil(data.results.length / pageSize);
+    data.pages = Math.ceil(data.count / pageSize);
 
     return data;
 }
 
-export async function getrecipeById(id) {
-    return api.get(endpoints.recipesDetails(id));
+export async function getRecipeById(id) {
+    return api.get(endpoints.recipeDetails(id));
 }
 
 export async function createRecipe(recipe) {
@@ -42,9 +42,9 @@ export async function createRecipe(recipe) {
 }
 
 export async function updateRecipe(id, recipe) {
-    return api.put(endpoints.recipesById + id, recipe);
+    return api.put(endpoints.recipeById + id, recipe);
 }
 
 export async function deleteRecipe(id) {
-    return api.del(endpoints.recipesById + id);
+    return api.del(endpoints.recipeById + id);
 }
