@@ -36,10 +36,8 @@ function pagerSetup(page, recipesPromise, search) {
 
         return html`
             Page ${page} of ${pages}
-            ${page > 1 ? html`<a class="pager" href=${'/catalog/' + createQuery(page - 1, search)}>&lt;
-                Prev</a>` : ''}
-            ${page < pages ? html`<a class="pager" href=${'/catalog/' + createQuery(page + 1, search)}>Next
-                &gt;</a>` : ''}`;
+            ${page > 1 ? html`<a class="pager" href=${'/catalog/' + createQuery(page - 1, search)}>&lt;Prev</a>` : ''}
+            ${page < pages ? html`<a class="pager" href=${'/catalog/' + createQuery(page + 1, search)}>Next&gt;</a>` : ''}`;
     };
 }
 

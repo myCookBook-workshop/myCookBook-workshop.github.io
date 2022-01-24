@@ -62,7 +62,6 @@ export async function editPage(ctx) {
                 steps: data.steps.split('\n').filter(r => r != '')
             };
 
-
             const result = await updateRecipe(recipeId, recipe);
             event.target.reset();
             ctx.notify('Recipe updated');

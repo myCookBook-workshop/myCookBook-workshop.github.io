@@ -54,7 +54,6 @@ export function createPage(ctx) {
                 steps: data.steps.split('\n').filter(r => r != '')
             };
             
-            
             const result = await createRecipe(recipe);
             event.target.reset();
             ctx.page.redirect('/details/' + result.objectId);

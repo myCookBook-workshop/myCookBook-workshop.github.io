@@ -16,6 +16,7 @@ async function request(url, options) {
         }
 
         return response.json();
+
     } catch (err) {
         notify(err.message);
         throw err;
@@ -92,5 +93,4 @@ export async function register(username, email, password) {
 export async function logout() {
     await post('/logout');
     clearUserData();
-
 }
