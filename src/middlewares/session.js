@@ -24,10 +24,9 @@ export default function initialize() {
 
     async function onLogout() {
         await logout();
-        notify('You have sucessfully logged out');
+        notify('You have successfully logged out');
         updateSession();
         _ctx.updateUserNav();
         _ctx.page.redirect('/');
     }
 }
-
